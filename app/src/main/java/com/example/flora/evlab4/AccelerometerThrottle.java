@@ -65,7 +65,7 @@ import android.os.AsyncTask;
 import java.io.IOException;
 import java.util.UUID;
 
-public class Accelerometer extends Activity implements SensorEventListener {
+public class AccelerometerThrottle extends Activity implements SensorEventListener {
 
     //Bluetooth settings
     String address = null;
@@ -272,7 +272,7 @@ public class Accelerometer extends Activity implements SensorEventListener {
         private boolean ConnectSuccess = true;
         @Override
         protected void onPreExecute() {
-            progress = ProgressDialog.show(Accelerometer.this, "Connecting...", "Please wait!!!");  //show a progress dialog
+            progress = ProgressDialog.show(AccelerometerThrottle.this, "Connecting...", "Please wait!!!");  //show a progress dialog
         }
         @Override
         //while the progress dialog is shown, the connection is done in background
