@@ -1,3 +1,42 @@
-This app enables control of MakerBay's EV Lab vehicle. 
+This sample app enables control of MakerBay's EV Lab vehicle. 
+It will be subject to modifications and changes. 
+  
+  Copyright © 2016 Flora Weil
 
+  Environment: 
+Android Studio 2.1.2
+
+  Contact: 
+weil.flora@gmail.com
+
+  Activities:
+DeviceList
+MainActivity
+Sliders
+Accelerometer 
+Data
+
+	Methods:
+pairedDevicesList() - View paired Bluetooth devices as a list and retrieve address by selecting.
+putExtra() - Passing address from one activity to another. 
+ConnectBT() - Bluetooth connection after device address is retrieved, called at every activity after MainActiviy.
+Disconnect() - Disconnect Bluetooth socket on click.
+addValues() - Set up and combine data to send over via Bluetooth and send using Android getOutputStream() method.
+turnBack()
+turnFront() - Change output to relay to change direction
+
+  Usage
+Open application.
+Select paired Bluetooth device: currently HC-09.
+Select control method: currently Accelerometer and Sliders 
+Wait for “Connected” toast. 
+Control 
+
+  Output Format
+Each time a change is detected a new set of values is sent to the Bluetooth socket in the format: 
+FF,FF,FF#
+1st value: steering
+2nd value: speed
+3rd value: brake
+Range: 0-255
 
