@@ -105,13 +105,13 @@
             android:layout_width="171dp"
             android:layout_height="wrap_content"
             android:text="Front"
-            android:id="@+id/button2" />
+            android:id="@+id/btn_front" />
 
         <Button
             android:layout_width="188dp"
             android:layout_height="wrap_content"
             android:text="Back"
-            android:id="@+id/button3" />
+            android:id="@+id/btn_back" />
 
     </LinearLayout>
 
@@ -146,7 +146,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Disconnect"
-        android:id="@+id/button4"
+        android:id="@+id/btn_disconnect"
         android:layout_gravity="right" />
 
 </LinearLayout>

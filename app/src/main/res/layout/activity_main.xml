@@ -33,23 +33,32 @@
         android:layout_gravity="center_horizontal">
 
     <Button
-        android:id="@+id/buttonaccel"
+        android:id="@+id/btn_AccSteering"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Accelerometer"
+        android:text="Accelerometer Steering"
         />
 
     <Button
-        android:id="@+id/buttonslider"
+        android:id="@+id/btn_Slider"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Sliders"
-        android:onClick="Sliders"
+
         />
+
+        <Button
+            android:id="@+id/btn_AccThrottle"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Accelerometer Throttle"
+            />
     </LinearLayout>
 
     <Button

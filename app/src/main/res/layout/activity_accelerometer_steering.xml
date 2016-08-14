@@ -15,22 +15,16 @@
         android:src="@drawable/logo2" />
 
 
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_calibrate"
+            android:id="@+id/btn_motor"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="Calibrate" />
-
-        <TextView
-            android:id="@+id/angleAC"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:text="Start Motor" />
 
     </LinearLayout>
 
@@ -40,6 +34,11 @@
         android:layout_height="wrap_content"
         android:text="Change Direction" />
 
+    <Button
+        android:id="@+id/btn_disconnect"
+        android:layout_width="135dp"
+        android:layout_height="wrap_content"
+        android:text="Disconnect" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,7 +57,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/currentY"
+            android:id="@+id/angleZ"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -67,7 +66,7 @@
             android:textSize="15dp" />
 
         <TextView
-            android:id="@+id/angleAY"
+            android:id="@+id/steering"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -75,21 +74,26 @@
             android:text="0.0"
             android:textSize="15dp" />
 
+
+        <TextView
+            android:id="@+id/throttle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="0.0"
+            android:textSize="15dp" />
+
+
+        <TextView
+            android:id="@+id/brake"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="0.0"
+            android:textSize="15dp" />
+
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/currentZ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:text="0.0"
-        android:textSize="15dp" />
-
-    <TextView
-        android:id="@+id/rotation_z"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="..." />
-
 </LinearLayout>

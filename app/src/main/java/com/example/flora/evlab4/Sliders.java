@@ -24,7 +24,7 @@ import java.util.UUID;
 public class Sliders extends Activity {
     
     //Variables and Widgets
-    Button btnFront, btnBack, btnDis;
+    Button btn_front, btn_back, btn_disconnect;
     SeekBar speed, steering, brake;
     TextView sp, st, br;
     String value1 = String.valueOf(0);
@@ -57,9 +57,9 @@ public class Sliders extends Activity {
         setContentView(R.layout.activity_sliders);
 
         //call the widgtes
-        btnFront = (Button)findViewById(R.id.button2);
-        btnBack = (Button)findViewById(R.id.button3);
-        btnDis = (Button)findViewById(R.id.button4);
+        btn_front = (Button)findViewById(R.id.btn_front);
+        btn_back = (Button)findViewById(R.id.btn_back);
+        btn_disconnect = (Button)findViewById(R.id.btn_disconnect);
         speed = (SeekBar)findViewById(R.id.seekBar);
         steering = (SeekBar)findViewById(R.id.seekBar2);
         brake = (SeekBar)findViewById(R.id.seekBar3);
@@ -71,7 +71,7 @@ public class Sliders extends Activity {
         new ConnectBT().execute(); 
 
         //Front
-        btnFront.setOnClickListener(new View.OnClickListener() {
+        btn_front.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 turnFront();
@@ -79,7 +79,7 @@ public class Sliders extends Activity {
         });
 
         //Back
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 turnBack();
@@ -87,10 +87,10 @@ public class Sliders extends Activity {
         });
 
         //Disconnect
-        btnDis.setOnClickListener(new View.OnClickListener() {
+        btn_disconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Disconnect();
+                disconnect();
             }
         });
 
@@ -146,7 +146,7 @@ public class Sliders extends Activity {
     }
 
     //Disconnect() to close bluetooth socket
-    private void Disconnect() {
+    private void disconnect() {
         if (btSocket!=null) {
             try {
                 btSocket.close();

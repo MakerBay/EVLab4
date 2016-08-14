@@ -1,5 +1,6 @@
 package com.example.flora.evlab4;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,21 +24,21 @@ public class MainActivity extends AppCompatActivity {
         //Layout
         setContentView(R.layout.activity_main);
 
-        //Switch to Accelerometer Activity
-        Button switchact = (Button) findViewById(R.id.buttonaccel);
-        switchact.setOnClickListener(new View.OnClickListener() {
+        //Switch to Accelerometer Steering Activity
+        Button btn_AccSteering = (Button) findViewById(R.id.btn_AccSteering);
+        btn_AccSteering.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent k = new Intent(MainActivity.this, Accelerometer.class);
+                Intent k = new Intent(MainActivity.this, AccelerometerSteering.class);
                 k.putExtra(EXTRA_ADDRESSA, address);
                 startActivity(k);
             }
         });
 
         //Switch to Slider Activity
-        Button switchact2 = (Button) findViewById(R.id.buttonslider);
-        switchact2.setOnClickListener(new View.OnClickListener() {
+        Button btn_Slider = (Button) findViewById(R.id.btn_Slider);
+        btn_Slider.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -47,7 +48,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Switch to Accelerometer Throttle Activity
+        Button btn_AccThrottle = (Button) findViewById(R.id.btn_AccThrottle);
+        btn_AccThrottle.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent k = new Intent(MainActivity.this, AccelerometerThrottle.class);
+                k.putExtra(EXTRA_ADDRESSA, address);
+                startActivity(k);
+            }
+        });
+
         //Switch to Data Collection Activity
 
     }
 }
+

@@ -7,7 +7,6 @@
 
     <application
         android:allowBackup="true"
-        android:debuggable="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
@@ -22,7 +21,8 @@
         </activity>
         <activity android:name=".Sliders" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".Accelerometer" />
+        <activity android:name=".AccelerometerThrottle" />
+        <activity android:name=".AccelerometerSteering" />
         <activity android:name=".Data"></activity>
     </application>
 
