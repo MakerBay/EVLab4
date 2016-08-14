@@ -9,6 +9,8 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -88,6 +90,12 @@ public class AccelerometerThrottle extends Activity implements SensorEventListen
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
+
+    private Handler repeatUpdateHandler = new Handler();
+
+    private boolean SteeringRight = false;
+    private boolean SteeringLeft = false;
+
 
     private float y = 0;
     private float z = 0;
@@ -214,6 +222,7 @@ public class AccelerometerThrottle extends Activity implements SensorEventListen
         calcThrottle();
 
         displayValues();
+        addValues();
     }
 
 
@@ -353,85 +362,92 @@ public class AccelerometerThrottle extends Activity implements SensorEventListen
         trackValue.setText(String.valueOf(track));
     }
 
-    private void msg(String s) {
-        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-    }
-
-
-    //Send data via Bluetooth
+    //addValues() to send data to Arduino via Bluetooth
     private void addValues() {
-        if (btSocket != null) {
+        if (btSocket!=null) {
+            checksum_int = steering + throttle + brake;
+            //checksum = String.valueOf(checksum_int);
 
-            steeringAc = Float.toString(steering);
-            throttleAc = Float.toString(throttle);
-            brakeAc = Float.toString(brake);
-
-            checksum_int = Integer.parseInt(steeringAc) + Integer.parseInt(throttleAc) + Integer.parseInt(brakeAc);
-            checksum = String.valueOf(checksum);
-
-            send = steeringAc + "," + throttleAc + "," + brakeAc + "," + checksum + "#";
-
+            send = steering+","+throttle+","+brake+","+checksum_int+"#";
 
             try {
                 btSocket.getOutputStream().write(send.toString().getBytes());
                 btSocket.getOutputStream().flush();
             } catch (IOException e) {
-                msg("Error");
+                msg("Error sending to Bluetooth");
             }
         }
     }
 
+    private void msg(String s) {
+        Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_led_control, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    //class to connect to Bluetooth
     private class ConnectBT extends AsyncTask<Void, Void, Void> {
         private boolean ConnectSuccess = true;
 
         @Override
         protected void onPreExecute() {
-            progress = ProgressDialog.show(AccelerometerThrottle.this, "Connecting...", "Please wait!!!");  //show a progress dialog
+            progress = ProgressDialog.show(AccelerometerThrottle.this, "Connecting...", "Please wait!!!");
         }
 
         @Override
-        //while the progress dialog is shown, the connection is done in background
         protected Void doInBackground(Void... devices) {
             try {
-
-                if (btSocket == null || !isBtConnected) {
-                    myBluetooth = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
-                    BluetoothDevice dispositivo = myBluetooth.getRemoteDevice(address);//connects to the device's address and checks if it's available
-                    btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
+                if (btSocket == null || !isBtConnected)
+                {
+                    myBluetooth = BluetoothAdapter.getDefaultAdapter();
+                    BluetoothDevice dispositivo = myBluetooth.getRemoteDevice(address);
+                    btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
-                    btSocket.connect();//start connection
+                    btSocket.connect();
                 }
-            } catch (IOException e) {
-                ConnectSuccess = false;//if the try failed, you can check the exception here
             }
-
+            catch (IOException e) {
+                ConnectSuccess = false;
+            }
             return null;
         }
-
         @Override
-        //after the doInBackground, it checks if everything went fine
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
             if (!ConnectSuccess) {
                 msg("Connection Failed. Is it a SPP Bluetooth? Try again.");
                 finish();
-            } else {
+            }
+            else {
                 msg("Connected.");
                 isBtConnected = true;
             }
             progress.dismiss();
         }
     }
-
+    //Disconnect() to close bluetooth socket
     private void disconnect() {
-        if (btSocket != null) {
+        if (btSocket!=null) {
             try {
                 btSocket.close();
-            } catch (IOException e) {
-                msg("Error Disconnect");
             }
+            catch (IOException e)
+            { msg("Error");}
         }
         finish();
     }

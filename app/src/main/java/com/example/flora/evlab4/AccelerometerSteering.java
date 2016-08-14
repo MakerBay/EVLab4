@@ -14,6 +14,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,9 +40,9 @@ public class AccelerometerSteering extends Activity implements SensorEventListen
     private boolean isBtConnected = false;
 
     //Send data via Bluetooth
-    String steeringAc = String.valueOf(0);
-    String throttleAc = String.valueOf(0);
-    String brakeAc = String.valueOf(0);
+    String steeringAcc = String.valueOf(0);
+    String throttleAcc = String.valueOf(0);
+    String brakeAcc = String.valueOf(0);
     String send = String.valueOf(0);
     String checksum = String.valueOf(0);
     int checksum_int = 0;
@@ -89,9 +91,9 @@ public class AccelerometerSteering extends Activity implements SensorEventListen
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
-        steeringAc = String.valueOf(0);
-        throttleAc = String.valueOf(0);
-        brakeAc = String.valueOf(0);
+        steeringAcc = String.valueOf(0);
+        throttleAcc = String.valueOf(0);
+        brakeAcc = String.valueOf(0);
 
     }
 
@@ -171,6 +173,7 @@ public class AccelerometerSteering extends Activity implements SensorEventListen
         calcSteering();
 
         displayValues();
+        addValues();
         }
 
 
@@ -230,64 +233,71 @@ public class AccelerometerSteering extends Activity implements SensorEventListen
         brakeValue.setText(String.valueOf(brake));
     }
 
-    private void msg(String s)
-    {
-        Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-    }
-
-
-    //Send data via Bluetooth
+    //addValues() to send data to Arduino via Bluetooth
     private void addValues() {
         if (btSocket!=null) {
+            checksum_int = steering + throttle + brake;
+            //checksum = String.valueOf(checksum_int);
 
-            steeringAc = Float.toString(steering);
-            throttleAc = Float.toString(throttle);
-            brakeAc = Float.toString(brake);
-
-            checksum_int = Integer.parseInt(steeringAc)+Integer.parseInt(throttleAc)+Integer.parseInt(brakeAc);
-            checksum = String.valueOf(checksum);
-
-            send = steeringAc+","+throttleAc+","+brakeAc+","+checksum+"#";
-
+            send = steering+","+throttle+","+brake+","+checksum_int+"#";
 
             try {
                 btSocket.getOutputStream().write(send.toString().getBytes());
                 btSocket.getOutputStream().flush();
             } catch (IOException e) {
-                msg("Error");
+                msg("Error sending to Bluetooth");
             }
         }
     }
 
 
+    private void msg(String s) {
+        Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_led_control, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    //class to connect to Bluetooth
     private class ConnectBT extends AsyncTask<Void, Void, Void> {
         private boolean ConnectSuccess = true;
+
         @Override
         protected void onPreExecute() {
-            progress = ProgressDialog.show(AccelerometerSteering.this, "Connecting...", "Please wait!!!");  //show a progress dialog
+            progress = ProgressDialog.show(AccelerometerSteering.this, "Connecting...", "Please wait!!!");
         }
+
         @Override
-        //while the progress dialog is shown, the connection is done in background
         protected Void doInBackground(Void... devices) {
             try {
-
-                if (btSocket == null || !isBtConnected) {
-                    myBluetooth = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
-                    BluetoothDevice dispositivo = myBluetooth.getRemoteDevice(address);//connects to the device's address and checks if it's available
-                    btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
+                if (btSocket == null || !isBtConnected)
+                {
+                    myBluetooth = BluetoothAdapter.getDefaultAdapter();
+                    BluetoothDevice dispositivo = myBluetooth.getRemoteDevice(address);
+                    btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
-                    btSocket.connect();//start connection
+                    btSocket.connect();
                 }
             }
-
             catch (IOException e) {
-                ConnectSuccess = false;//if the try failed, you can check the exception here
+                ConnectSuccess = false;
             }
-
             return null;
         }
         @Override
-        //after the doInBackground, it checks if everything went fine
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
@@ -295,7 +305,6 @@ public class AccelerometerSteering extends Activity implements SensorEventListen
                 msg("Connection Failed. Is it a SPP Bluetooth? Try again.");
                 finish();
             }
-
             else {
                 msg("Connected.");
                 isBtConnected = true;
@@ -303,14 +312,14 @@ public class AccelerometerSteering extends Activity implements SensorEventListen
             progress.dismiss();
         }
     }
-
+    //Disconnect() to close bluetooth socket
     private void disconnect() {
         if (btSocket!=null) {
             try {
                 btSocket.close();
             }
             catch (IOException e)
-            { msg("Error Disconnect");}
+            { msg("Error");}
         }
         finish();
     }
