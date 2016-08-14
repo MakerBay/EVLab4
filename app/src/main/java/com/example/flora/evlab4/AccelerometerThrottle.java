@@ -167,7 +167,7 @@ public class AccelerometerThrottle extends Activity implements SensorEventListen
                 if (motorOn) {
                     btn_motor.setText("Motor is ON");
                 } else btn_motor.setText("Motor is OFF");
-            }
+            }//hallo
         });
         btn_disconnect = (Button) findViewById(R.id.btn_disconnect);
         btn_disconnect.setOnClickListener(new View.OnClickListener() {
