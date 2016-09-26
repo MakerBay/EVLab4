@@ -5,14 +5,16 @@ It will be subject to modifications and changes.
 Android Studio 2.1.2
 
   Contact: 
-Flora Weil
-weil.flora@gmail.com
+Christoph Bessler
+christoph.bessler@tum.de
 
   Activities:
 DeviceList
 MainActivity
-Sliders
-Accelerometer 
+Sliders (not final)
+AccelerometerSteering (not final)
+AccelerometerThrottle (not final)
+Trackpad 
 Data
 
 	Methods:
@@ -33,9 +35,10 @@ Control
 
   Output Format
 Each time a change is detected a new set of values is sent to the Bluetooth socket in the format: 
-FF,FF,FF#
+FF,FF,FF,FF#
 1st value: steering
 2nd value: speed
 3rd value: brake
-Range: 0-255
+4th value: check sum
+Range: 0-255 (check sum 0 - 765 (max), realistic 637 as max)
 
