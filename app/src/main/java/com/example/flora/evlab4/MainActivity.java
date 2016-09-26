@@ -60,6 +60,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btn_Trackpad = (Button) findViewById(R.id.btn_Trackpad);
+        btn_Trackpad.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent k = new Intent(MainActivity.this, Trackpad.class);
+                k.putExtra(EXTRA_ADDRESSA, address);
+                startActivity(k);
+            }
+        });
+
+
         //Switch to Data Collection Activity
 
     }
